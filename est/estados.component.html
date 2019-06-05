@@ -1,0 +1,108 @@
+<!doctype html>
+<html ng-app="CadClientes">
+<head>
+<link rel="stylesheet" type="text/css" href="style.css">
+<meta charset="utf-8">
+<script src="angular-1.7.8/angular.js"></script>
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
+
+<script>
+angular.module("CadClientes", []);
+angular.module("CadClientes").controller("CadClientesCtrl", 
+function ($scope) {
+    $scope.app = "Cadastro de Clientes";
+    $scope.clientes = [
+        {
+            nome: "Teste1", codigo: "0001"
+        },
+        {
+            nome: "Teste2", codigo: "0002"
+        },
+        {
+            nome: "Teste3", codigo: "0003"
+        },
+    ];
+
+
+    $scope.tipoClientes = [
+        {tipo:"Pessoa Fisica", codigo:"01"},
+        {tipo:"Pessoa Juridica", codigo:"02"},
+        {tipo:"Socios", codigo:"03"},
+
+    ];
+
+    $scope.adicionarClientes = function(cliente) {
+        $scope.clientes.push(angular.copy(cliente));
+        delete $scope.cliente;
+    };
+
+    $scope.apagarClientes = function(clientes) {
+     $scope.clientes = clientes.filter(function (cliente) {
+
+        if (!cliente.selecionado) return cliente;
+
+     });
+
+    };
+
+    $scope.classe1 = "selecionado";
+    $scope.classe2 = "negrito";
+});
+</script>
+
+
+<title>Cadastro de Clientes</title>
+</head>
+
+<body ng-controller="CadClientesCtrl">
+    <div class="jumbotron"> <h3> {{app}} </h3> 
+    <table class="table table-striped" >
+        <tr> 
+            <th>Nome </th>
+            <th>Código</th>
+            <th>Tipo Cliente</th>
+        </tr>
+        <tr ng-class="{selecionado: cliente.selecionado, negrito: cliente.selecionado}" ng-repeat="cliente in clientes">
+          <td> <input type="checkbox" ng-model="cliente.selecionado"> </td>
+            <td>
+                {{cliente.nome}}
+            </td>
+           <td>
+               {{cliente.codigo}}
+           </td>
+           <td>
+              {{cliente.tipoClientes.tipo}}
+        </td>
+
+        </tr>
+    </table>
+
+    <hr>
+
+
+    <input class="form-control" type="text" ng-model="cliente.nome"
+    placeholder="Nome" >
+    <input class="form-control" type="text" ng-model="cliente.codigo"
+    placeholder="Código">
+
+    <select ng-model="cliente.tipoClientes" ng-options="tipoCliente.tipo for tipoCliente in tipoClientes" >
+      <option value=""> Selecione um tipo de cliente </option>
+
+    </select>
+   
+    <button class="btn btn-primary btn-block" ng-click="adicionarClientes(cliente)" ng-disabled="!cliente.nome || !cliente.codigo">
+        Adicionar Cliente
+    </button>
+
+    <button class="btn btn-danger btn-block" ng-click="apagarClientes(clientes)">
+        Apagar Cliente
+    </button>
+
+    
+
+</div>
+</body>
+</html>
+
+
+
